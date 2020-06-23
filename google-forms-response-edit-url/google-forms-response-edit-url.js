@@ -25,8 +25,7 @@ function addFormResponseUrl(e) {
 
     // Get the form response based on the timestamp
     var timestamp = new Date(e.namedValues["Timestamp"]);
-    
-    Logger.log(timestamp);
+
     var formResponse = retryGetResponses(googleForm, timestamp);
 
     // Get the Form response URL and add it to the Google Spreadsheet
