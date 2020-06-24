@@ -2,4 +2,4 @@
 
 For some reason these devices present the hddtemp output with a lot of garbage. This script outputs only the temperature value.
 
-Can be helpful for monitoring or data collection tool that can run shell commands (Home Assistant or openHAB)
+Can be helpful for monitoring or data collection tools that can run shell commands (Home Assistant or openHAB)
