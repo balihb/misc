@@ -18,6 +18,8 @@ function createFormTrigger() {
 }
 
 function addFormResponseUrl(e) {
+    var responseColumn = 10; // Column where the response URL is recorded.
+    
     // Get the Google Form linked to the response
     var responseSheet = e.range.getSheet();
     var googleFormUrl = responseSheet.getFormUrl();
@@ -31,7 +33,6 @@ function addFormResponseUrl(e) {
     // Get the Form response URL and add it to the Google Spreadsheet
     var responseUrl = formResponse.getEditResponseUrl();
     var row = e.range.getRow();
-    var responseColumn = 10; // Column where the response URL is recorded.
     responseSheet.getRange(row, responseColumn).setValue(responseUrl);
 }
 

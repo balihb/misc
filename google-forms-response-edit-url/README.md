@@ -13,4 +13,6 @@ In the responses spreadsheet click `Tools` -> `Script editor`.
 
 Paste the content of the `google-forms-response-edit-url.js` file.
 
+Modify `responseColumn` at the begining of `addFormResponseUrl`.
+
 Click `Select function`. Choose `createFormTrigger`. Click the run icon.
