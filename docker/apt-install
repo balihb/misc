@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# prepare
+APT_TMP_DIR=$(mktemp -d)
+
+mkdir -p /var/lib/apt/lists/auxfiles
+mkdir -p /var/lib/apt/lists/partial
+
+# backup
+mkdir -p "${APT_TMP_DIR}/usr/share"
+mkdir -p "${APT_TMP_DIR}/var/cache/debconf"
+mkdir -p "${APT_TMP_DIR}/var/lib/dpkg"
+mkdir -p "${APT_TMP_DIR}/var/log"
+cp -a /var/cache/debconf/config.dat-old "${APT_TMP_DIR}/var/cache/debconf/config.dat-old"
+cp -a /var/cache/debconf/templates.dat-old "${APT_TMP_DIR}/var/cache/debconf/templates.dat-old"
+cp -a /var/lib/dpkg/status-old "${APT_TMP_DIR}/var/lib/dpkg/status-old"
+cp -a /var/log/alternatives.log "${APT_TMP_DIR}/var/log/alternatives.log"
+cp -a /var/log/dpkg.log "${APT_TMP_DIR}/var/log/dpkg.log"
+mv /var/log/apt "${APT_TMP_DIR}/var/log/apt"
+
+# install
+apt-get update -qq -y
+DEBIAN_FRONTEND=noninteractive apt-get install -qq -y --no-install-recommends "${@}"
+
+# cleanup
+rm -rf /var/lib/apt/lists/*
+
+# restore
+rm -rf /var/log/apt
+mv "${APT_TMP_DIR}/var/cache/debconf/config.dat-old" /var/cache/debconf/config.dat-old
+mv "${APT_TMP_DIR}/var/cache/debconf/templates.dat-old" /var/cache/debconf/templates.dat-old
+mv "${APT_TMP_DIR}/var/lib/dpkg/status-old" /var/lib/dpkg/status-old
+mv "${APT_TMP_DIR}/var/log/alternatives.log" /var/log/alternatives.log
+mv "${APT_TMP_DIR}/var/log/apt" /var/log/apt
+mv "${APT_TMP_DIR}/var/log/dpkg.log" /var/log/dpkg.log
+
+rm -rf "${APT_TMP_DIR}"
